@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 33278311313159034}
   - component: {fileID: 23591524144112030}
   - component: {fileID: 65824107001962394}
+  - component: {fileID: 114386459436027588}
   m_Layer: 0
   m_Name: Stomper
   m_TagString: Untagged
@@ -96,3 +97,23 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &114386459436027588
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1552630075876108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e784fb39e1510bd4196c5bd95ae0c6df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShakeDistance: 2
+  ShakeFrequency: 30
+  UpPoition: {x: 0, y: 2, z: 0}
+  DownPosition: {x: 0, y: -1, z: 0}
+  TimeToMoveDown: 400
+  TimeToMoveUp: 600
+  TimeSteady: 2000
+  TimeGrumble: 500
+  DownTime: 200
