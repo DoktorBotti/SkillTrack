@@ -81,8 +81,8 @@ public class GrumbleStomperState : StomperState
 
         Vector3 toShake = new Vector3();
         toShake.x = Mathf.Sin(Time.deltaTime * (float)stateMachine.ShakeFrequency) * (float) stateMachine.ShakeDistance - (float) stateMachine.ShakeDistance / 2;
-        toShake.y = Mathf.Sin(Time.deltaTime * (float)stateMachine.ShakeFrequency + phaseShift) * (float) stateMachine.ShakeDistance;
-        toShake.z = Mathf.Sin(Time.deltaTime * (float)stateMachine.ShakeFrequency + 2 * phaseShift) * (float) stateMachine.ShakeDistance;
+        toShake.y = Mathf.Sin(Time.deltaTime * (float)stateMachine.ShakeFrequency + phaseShift) * (float) stateMachine.ShakeDistance- (float) stateMachine.ShakeDistance / 2;
+        toShake.z = Mathf.Sin(Time.deltaTime * (float)stateMachine.ShakeFrequency + 2 * phaseShift) * (float) stateMachine.ShakeDistance- (float) stateMachine.ShakeDistance / 2;
         stateMachine.transform.localPosition += toShake;
     }
 
@@ -107,7 +107,7 @@ public class StompStomperState : StomperState
     public StompStomperState(StomperStateMachine stomper) : base(stomper)
     {
         Debug.Log("Stomp");
-        travelVec = stateMachine.UpPoition - stateMachine.DownPosition;
+        travelVec = stateMachine.DownPosition - stateMachine.UpPoition;
         downVelocity = travelVec.magnitude / stateMachine.TimeToMoveDown;
         rootPosition = stateMachine.transform.localPosition;
     }
@@ -136,7 +136,6 @@ public class StompStomperState : StomperState
 
 public class DownStomperState : StomperState
 {
-    private bool SwitchWasTriggered = false;
 
     public DownStomperState(StomperStateMachine stomper) : base(stomper)
     {
@@ -170,7 +169,7 @@ public class GoUpStomperState : StomperState
     {
         Debug.Log("Up");
         rootPosition = stateMachine.transform.localPosition;
-        travelVec = stateMachine.DownPosition - stateMachine.UpPoition;
+        travelVec = stateMachine.UpPoition - stateMachine.DownPosition;
         upVelocity = travelVec.magnitude / stateMachine.TimeToMoveUp;
     }
 
@@ -189,7 +188,7 @@ public class GoUpStomperState : StomperState
 
     public override void TriggerStateChange()
     {
-        Task.Delay(base.stateMachine.TimeGrumble).ContinueWith(t => stateMachine.ToNextState(getNextState));
+        Task.Delay(base.stateMachine.TimeToMoveUp).ContinueWith(t => stateMachine.ToNextState(getNextState));
 
     }
 }
