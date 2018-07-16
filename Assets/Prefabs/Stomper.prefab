@@ -108,12 +108,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e784fb39e1510bd4196c5bd95ae0c6df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShakeDistance: 2
-  ShakeFrequency: 30
-  UpPoition: {x: 0, y: 2, z: 0}
-  DownPosition: {x: 0, y: -1, z: 0}
-  TimeToMoveDown: 400
-  TimeToMoveUp: 600
-  TimeSteady: 2000
-  TimeGrumble: 500
-  DownTime: 200
+  ShakeDistance: 0.07
+  ShakeFrequency: 60
+  UpPoition: {x: 0, y: 4, z: 0}
+  DownPosition: {x: 0, y: 0, z: 0}
+  TimeToMoveDown: 250
+  TimeToMoveUp: 800
+  TimeSteady: 2731
+  TimeGrumble: 800
+  DownTime: 400
+  spawnPosition: {x: 0, y: 0, z: 0}
+  startDelay: 0

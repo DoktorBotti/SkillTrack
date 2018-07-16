@@ -44,7 +44,6 @@ public class SteadyStomperState : StomperState
 {
     public SteadyStomperState(StomperStateMachine stomper) : base(stomper)
     {
-        Debug.Log("Steady");
     }
 
     public override void Execute()
@@ -67,28 +66,28 @@ public class SteadyStomperState : StomperState
 public class GrumbleStomperState : StomperState
 {
     float phaseShift = Mathf.PI / 2;
-    Vector3 origPosition;
+    float passedTime;
 
     public GrumbleStomperState(StomperStateMachine stateMachine) : base(stateMachine)
     {
-        Debug.Log("Grumble");
-        origPosition = stateMachine.transform.localPosition;
     }
 
     public override void Execute()
     {
         base.Execute();
+        passedTime += Time.deltaTime * 1000;
+        passedTime %= (float) (stateMachine.ShakeFrequency * 2 * Mathf.PI);
 
         Vector3 toShake = new Vector3();
-        toShake.x = Mathf.Sin(Time.deltaTime * (float)stateMachine.ShakeFrequency) * (float) stateMachine.ShakeDistance - (float) stateMachine.ShakeDistance / 2;
-        toShake.y = Mathf.Sin(Time.deltaTime * (float)stateMachine.ShakeFrequency + phaseShift) * (float) stateMachine.ShakeDistance- (float) stateMachine.ShakeDistance / 2;
-        toShake.z = Mathf.Sin(Time.deltaTime * (float)stateMachine.ShakeFrequency + 2 * phaseShift) * (float) stateMachine.ShakeDistance- (float) stateMachine.ShakeDistance / 2;
+        toShake.x = (Mathf.Sin(passedTime * (float)stateMachine.ShakeFrequency) - 0f) * (float) stateMachine.ShakeDistance;
+        toShake.y = (Mathf.Sin(passedTime * (float)stateMachine.ShakeFrequency + phaseShift) - 0f) * (float)stateMachine.ShakeDistance;
+        toShake.z = (Mathf.Sin(passedTime * (float)stateMachine.ShakeFrequency + 2 * phaseShift) - 0f) * (float) stateMachine.ShakeDistance;
         stateMachine.transform.localPosition += toShake;
     }
 
     public override State getNextState()
     {
-        stateMachine.transform.localPosition = origPosition;
+        stateMachine.transform.localPosition = stateMachine.spawnPosition + stateMachine.UpPoition;
         return new StompStomperState(stateMachine);
     }
 
@@ -102,14 +101,15 @@ public class GrumbleStomperState : StomperState
 public class StompStomperState : StomperState
 {
     private float downVelocity;
-    private Vector3 travelVec, rootPosition;
+    private Vector3 travelVec, startPos;
+
     private float passedTime = 0;
     public StompStomperState(StomperStateMachine stomper) : base(stomper)
     {
-        Debug.Log("Stomp");
         travelVec = stateMachine.DownPosition - stateMachine.UpPoition;
+        startPos = stateMachine.spawnPosition + stateMachine.UpPoition;
+
         downVelocity = travelVec.magnitude / stateMachine.TimeToMoveDown;
-        rootPosition = stateMachine.transform.localPosition;
     }
 
     public override void Execute()
@@ -117,12 +117,13 @@ public class StompStomperState : StomperState
         base.Execute();
 
         passedTime += Time.deltaTime * 1000;
-        stateMachine.transform.localPosition = stateMachine.UpPoition + downVelocity * passedTime * travelVec.normalized + rootPosition;
+        Vector3 newPos = startPos + downVelocity * travelVec.normalized * passedTime;
+        stateMachine.transform.localPosition = newPos;
     }
 
     public override State getNextState()
     {
-        stateMachine.transform.localPosition = stateMachine.DownPosition + rootPosition;
+        stateMachine.transform.localPosition = stateMachine.DownPosition + stateMachine.spawnPosition;
 
         return new DownStomperState(stateMachine);
     }
@@ -139,7 +140,6 @@ public class DownStomperState : StomperState
 
     public DownStomperState(StomperStateMachine stomper) : base(stomper)
     {
-        Debug.Log("IsDown");
     }
 
     public override void Execute()
@@ -163,12 +163,12 @@ public class DownStomperState : StomperState
 public class GoUpStomperState : StomperState
 {
     private float upVelocity;
-    private Vector3 travelVec, rootPosition;
+    private Vector3 travelVec, startPosition;
     private float passedTime = 0;
+
     public GoUpStomperState(StomperStateMachine stomper) : base(stomper)
     {
-        Debug.Log("Up");
-        rootPosition = stateMachine.transform.localPosition;
+        startPosition = stateMachine.spawnPosition + stateMachine.DownPosition;
         travelVec = stateMachine.UpPoition - stateMachine.DownPosition;
         upVelocity = travelVec.magnitude / stateMachine.TimeToMoveUp;
     }
@@ -177,12 +177,13 @@ public class GoUpStomperState : StomperState
     {
         base.Execute();
         passedTime += Time.deltaTime * 1000;
-        stateMachine.transform.localPosition = stateMachine.DownPosition + upVelocity * passedTime * travelVec.normalized + rootPosition;
+        Vector3 newPos = startPosition + upVelocity * travelVec.normalized * passedTime;
+        stateMachine.transform.localPosition = newPos;
     }
 
     public override State getNextState()
     {
-        stateMachine.transform.localPosition = stateMachine.UpPoition + rootPosition;
+        stateMachine.transform.localPosition = stateMachine.UpPoition + stateMachine.spawnPosition;
         return new SteadyStomperState(stateMachine);
     }
 

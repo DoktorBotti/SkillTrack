@@ -33,9 +33,16 @@ public class StomperStateMachine : MonoBehaviour
     private State currState;
     private GetStateDelegate nextState;
 
-    public StomperStateMachine()
+    [HideInInspector]
+    public Vector3 spawnPosition;
+
+    [Tooltip("Time in ms before the stomper gets active")]
+    public int startDelay = 0;
+
+    public void Start()
     {
-        currState = new SteadyStomperState(this);
+        spawnPosition = transform.localPosition;
+        System.Threading.Tasks.Task.Delay(startDelay).ContinueWith(t => currState = new SteadyStomperState(this));
     }
 
     public void ToNextState(GetStateDelegate deleg)
@@ -45,9 +52,9 @@ public class StomperStateMachine : MonoBehaviour
 
     public void Update()
     {
-        if(nextState != null)
+        if (nextState != null)
         {
-            if(name == "FirstStomper")
+            if (name == "FirstStomper")
             {
                 Debug.Log("Changing Status");
             }
@@ -55,7 +62,12 @@ public class StomperStateMachine : MonoBehaviour
 
             nextState = null;
         }
-        currState.Execute();
+        if (currState != null)
+        {
+
+
+            currState.Execute();
+        }
     }
 
     /*
