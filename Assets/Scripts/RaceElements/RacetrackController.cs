@@ -30,6 +30,14 @@ public class RacetrackController : MonoBehaviour
         }
     }
 
+    public Tuple<int, int> CheckpointStatus
+    {
+        get
+        {
+            return new Tuple<int, int>(CheckedWaypoints, waypoints.Count);
+        }
+    }
+
     private RaceStatus _raceStatus;
 
     public RaceStatus raceStatus
@@ -92,7 +100,6 @@ public class RacetrackController : MonoBehaviour
         _raceStatus = RaceStatus.FINISHED;
 
         Debug.Log($"Race finished! Time: {endTime}");
-        ResetRace();
     }
 
     public  void FailRace()
