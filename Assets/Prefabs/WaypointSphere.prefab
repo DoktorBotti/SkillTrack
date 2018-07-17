@@ -22,6 +22,8 @@ GameObject:
   - component: {fileID: 33435199031628092}
   - component: {fileID: 23292297109260006}
   - component: {fileID: 135823654181602932}
+  - component: {fileID: 114131102661801852}
+  - component: {fileID: 114693460528297110}
   m_Layer: 0
   m_Name: WaypointSphere
   m_TagString: Untagged
@@ -84,6 +86,29 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1135536267367168}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &114131102661801852
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1135536267367168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34b577ae6f3ecb244a8860d803280847, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  setColor: {r: 0, g: 1, b: 0, a: 0.5686275}
+--- !u!114 &114693460528297110
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1135536267367168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84c4911ef5ade2b408b288ac5462aea7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!135 &135823654181602932
 SphereCollider:
   m_ObjectHideFlags: 1
