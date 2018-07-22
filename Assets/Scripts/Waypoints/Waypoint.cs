@@ -32,7 +32,7 @@ public class Waypoint : MonoBehaviour
         checkedDelegate = controller.RegisterWaypoint(this);
     }
 
-    private void OnTriggerEnter(Collider other)
+    protected virtual void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Car" && !isChecked)
         {
